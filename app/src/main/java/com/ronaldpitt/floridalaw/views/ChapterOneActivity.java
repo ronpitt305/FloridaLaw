@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,9 +21,8 @@ import com.ronaldpitt.floridalaw.models.FloridaStatutes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-public class ChapterActivity extends AppCompatActivity {
+public class ChapterOneActivity extends AppCompatActivity {
 
     ListView listView;
     ArrayClass arrayClass;
@@ -40,7 +38,7 @@ public class ChapterActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String[] receivedArray = intent.getStringArrayExtra("chapters");
         final int numChapter = intent.getIntExtra("chapterNumber", 0);
-        Log.i("Current numChapter", String.valueOf(numChapter));
+
 
         arrayClass = new ArrayClass();
         chapterArray = new ArrayList<>();
@@ -53,7 +51,17 @@ public class ChapterActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                receivedInterger = position + 1;
+
+                //gets Text from listView
+                String getChapterNumber = (String) listView.getItemAtPosition(position);
+
+                //Exacting chapter number from getChapterNumber
+                String receivedChapter = getChapterNumber.replaceAll("[^0-9]", "");
+
+                //Finally a number
+                int chapterNumber = Integer.parseInt(receivedChapter);
+
+                receivedInterger = chapterNumber;
 
                 TitleGetter chapterGetter = new TitleGetter();
                 chapterGetter.execute();
@@ -65,12 +73,12 @@ public class ChapterActivity extends AppCompatActivity {
 
     private class TitleGetter extends AsyncTask<Void, Void, Void>{
 
-        Intent intent = new Intent(ChapterActivity.this, TitleActivity.class);
+        Intent intent = new Intent(ChapterOneActivity.this, TitleTwoActivity.class);
 
         @Override
         protected Void doInBackground(Void... voids) {
             ManagerClass managerClass = new ManagerClass();
-            CognitoCredentialsProvider credentialsProvider = managerClass.getCredentials(ChapterActivity.this);
+            CognitoCredentialsProvider credentialsProvider = managerClass.getCredentials(ChapterOneActivity.this);
             AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(credentialsProvider);
             DynamoDBMapper mapper = new DynamoDBMapper(dynamoDBClient);
 
@@ -84,22 +92,29 @@ public class ChapterActivity extends AppCompatActivity {
 
             PaginatedQueryList<FloridaStatutes> chapterList = mapper.query(FloridaStatutes.class, queryExpression);
 
-                ArrayList<String> chapterArray = new ArrayList<>();
-                ArrayList<Integer> titlesArrayList = new ArrayList<>();
-
+                ArrayList<String> descriptionArray = new ArrayList<>();
+                ArrayList<Integer> arrayForTitle = new ArrayList<>();
+                ArrayList<FloridaStatutes> floridaArray = new ArrayList<>();
 
                 for (int i = 0; i < chapterList.size(); i++){
-                    chapterArray.add(chapterList.get(i).getDescription());
-                    titlesArrayList.add(chapterList.get(i).getTitle());
-                    Log.i("Title array contains", titlesArrayList.get(i).toString());
-
+                    descriptionArray.add(chapterList.get(i).getDescription());
+                    arrayForTitle.add(chapterList.get(i).getTitle());
+                    floridaArray.add(new FloridaStatutes(chapterList.get(i).getTitle(), chapterList.get(i).getDescription()));
                 }
 
 
+            // Sending the new list View / ArrayList
+            intent.putExtra("descriptionArray", descriptionArray);
 
-            intent.putExtra("chapterArray", chapterArray);
-            intent.putExtra("titles", titlesArrayList);
-            intent.putExtra("receivedInterger", receivedInterger);
+            //Now sending the array List for the matching Titles
+            intent.putExtra("titleArray", arrayForTitle);
+
+            intent.putExtra("floridaArray", floridaArray);
+
+
+
+            // Sending current pressed chapter
+            intent.putExtra("requestedTitle", receivedInterger);
             startActivity(intent);
 
 

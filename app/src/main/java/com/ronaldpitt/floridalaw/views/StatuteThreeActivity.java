@@ -7,9 +7,10 @@ import android.widget.TextView;
 
 import com.ronaldpitt.floridalaw.R;
 
-public class StatuteActivity extends AppCompatActivity {
+public class StatuteThreeActivity extends AppCompatActivity {
 
     TextView statuteView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

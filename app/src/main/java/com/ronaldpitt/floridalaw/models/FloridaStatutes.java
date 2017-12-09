@@ -7,8 +7,10 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRan
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
+import java.io.Serializable;
+
 @DynamoDBTable(tableName = "florida_statutes")
-public class FloridaStatutes {
+public class FloridaStatutes implements Serializable{
 
     private int chapter;
     private int title;
@@ -18,6 +20,11 @@ public class FloridaStatutes {
     public FloridaStatutes() {
     }
 
+
+    public FloridaStatutes(int title, String description){
+        this.title = title;
+        this.description = description;
+    }
 
 
 
