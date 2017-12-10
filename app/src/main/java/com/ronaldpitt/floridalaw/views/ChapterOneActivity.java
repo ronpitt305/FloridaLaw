@@ -17,6 +17,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExp
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.ronaldpitt.floridalaw.ArrayClass;
+import com.ronaldpitt.floridalaw.CustomAdapters.ChapterAdapter;
 import com.ronaldpitt.floridalaw.ManagerClass;
 import com.ronaldpitt.floridalaw.R;
 import com.ronaldpitt.floridalaw.models.FloridaStatutes;
@@ -76,7 +77,6 @@ public class ChapterOneActivity extends AppCompatActivity {
     private class TitleGetter extends AsyncTask<Void, Void, Void>{
 
         Intent intent = new Intent(ChapterOneActivity.this, TitleTwoActivity.class);
-        Bundle mbundle;
 
         @Override
         protected Void doInBackground(Void... voids) {

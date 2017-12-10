@@ -1,4 +1,4 @@
-package com.ronaldpitt.floridalaw;
+package com.ronaldpitt.floridalaw.CustomAdapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ronaldpitt.floridalaw.R;
 import com.ronaldpitt.floridalaw.models.FloridaStatutes;
 
 import java.util.ArrayList;

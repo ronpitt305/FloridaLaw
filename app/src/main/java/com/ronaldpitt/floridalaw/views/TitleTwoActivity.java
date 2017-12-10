@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
@@ -15,7 +13,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.ronaldpitt.floridalaw.ManagerClass;
 import com.ronaldpitt.floridalaw.R;
-import com.ronaldpitt.floridalaw.StatuteAdapter;
+import com.ronaldpitt.floridalaw.CustomAdapters.StatuteAdapter;
 import com.ronaldpitt.floridalaw.models.FloridaStatutes;
 
 import java.util.ArrayList;
