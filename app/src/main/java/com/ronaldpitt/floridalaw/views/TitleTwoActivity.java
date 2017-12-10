@@ -23,36 +23,24 @@ import java.util.ArrayList;
 public class TitleTwoActivity extends AppCompatActivity {
 
     ListView lawList;
-    int pressedStatute = 0;
     int requestedChapter = 0;
     int requestTitle = 0;
-    ArrayList<FloridaStatutes> transList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
 
-        //Setting up from Chapter Activity
         lawList = (ListView) findViewById(R.id.lawList);
         Intent intent = getIntent();
 
-        //Got chapter array for listView (lawList)
         ArrayList<String> descriptionArrayList = intent.getStringArrayListExtra("descriptionArray");
 
         //Got titles array
         final ArrayList<Integer> titlesArray = intent.getIntegerArrayListExtra("titleArray");
 
-        ArrayList<FloridaStatutes> floridaArray = getIntent().getSerializableExtra("floridaArray");
-
-
-        /*for (int i = 0; i < titlesArray.size(); i++){
-            transList.add(new FloridaStatutes(titlesArray.get(i), descriptionArrayList.get(i)));
-        }*/
-
-
-        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
-        StatuteAdapter statuteAdapter = new StatuteAdapter(this, transList);
+        ArrayList<FloridaStatutes> floridaArray = intent.getParcelableArrayListExtra("floridaArray");
+        StatuteAdapter statuteAdapter = new StatuteAdapter(this, floridaArray);
 
         requestedChapter = intent.getIntExtra("requestedTitle", 0);
 
@@ -64,11 +52,7 @@ public class TitleTwoActivity extends AppCompatActivity {
 
                 requestTitle = titlesArray.get(position);
 
-
-                Log.i("Title2 Pos pressed:", String.valueOf(position));
-                Log.i("Title2 press title", String.valueOf(requestTitle));
-
-                //Init Async task
+                //Async Task
                 ChapterLoader loader = new ChapterLoader();
                 loader.execute();
             }
@@ -92,12 +76,8 @@ public class TitleTwoActivity extends AppCompatActivity {
 
             FloridaStatutes floridaStatutes = mapper.load(FloridaStatutes.class, requestedChapter, requestTitle);
 
-            Log.i("Uploaded Law", floridaStatutes.getStatute());
-
             intent.putExtra("statute", floridaStatutes.getStatute());
             startActivity(intent);
-
-
 
             return null;
 

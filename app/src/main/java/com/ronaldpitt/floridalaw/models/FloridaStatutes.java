@@ -1,16 +1,16 @@
 package com.ronaldpitt.floridalaw.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
-import java.io.Serializable;
-
 @DynamoDBTable(tableName = "florida_statutes")
-public class FloridaStatutes implements Serializable{
+public class FloridaStatutes implements Parcelable{
 
     private int chapter;
     private int title;
@@ -21,7 +21,8 @@ public class FloridaStatutes implements Serializable{
     }
 
 
-    public FloridaStatutes(int title, String description){
+    public FloridaStatutes(int chapter, int title, String description){
+        this.chapter = chapter;
         this.title = title;
         this.description = description;
     }
@@ -72,4 +73,33 @@ public class FloridaStatutes implements Serializable{
     public void setStatute(String statute) {
         this.statute = statute;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(chapter);
+        parcel.writeInt(title);
+        parcel.writeString(description);
+
+    }
+
+    public static final Parcelable.Creator<FloridaStatutes> CREATOR = new Creator<FloridaStatutes>() {
+        @Override
+        public FloridaStatutes createFromParcel(Parcel parcel) {
+            FloridaStatutes mFloridaStatutes = new FloridaStatutes();
+            mFloridaStatutes.chapter = parcel.readInt();
+            mFloridaStatutes.title = parcel.readInt();
+            mFloridaStatutes.description = parcel.readString();
+            return mFloridaStatutes;
+        }
+
+        @Override
+        public FloridaStatutes[] newArray(int i) {
+            return new FloridaStatutes[0];
+        }
+    };
 }

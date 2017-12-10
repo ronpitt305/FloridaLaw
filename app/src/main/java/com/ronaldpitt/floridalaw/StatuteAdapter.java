@@ -1,6 +1,7 @@
 package com.ronaldpitt.floridalaw;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class StatuteAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return i;
+        return floridaStatutesArrayList.get(i);
     }
 
     @Override
@@ -40,16 +41,20 @@ public class StatuteAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        view = LayoutInflater.from(context).inflate(R.layout.statuterow, viewGroup, false);
+        if (view == null){
+            view = LayoutInflater.from(context).inflate(R.layout.statuterow, viewGroup, false);
+        }
 
-        //TextView statute = (TextView) view.findViewById(R.id.sStatute);
-        TextView title = (TextView) view.findViewById(R.id.sTitle);
+
+
+        TextView statute = (TextView) view.findViewById(R.id.sStatute);
+        TextView chapter = (TextView) view.findViewById(R.id.sChapter);
         TextView desc = (TextView) view.findViewById(R.id.sDesc);
 
         // setting data into textViews
-        //statute.setText("Statue");
-        title.setText(floridaStatutesArrayList.get(i).getTitle());
-        desc.setText(floridaStatutesArrayList.get(i).getDescription());
+        statute.setText("Statute");
+        chapter.setText("Chapter: " +String.valueOf(floridaStatutesArrayList.get(i).getChapter()));
+        desc.setText("\n" + floridaStatutesArrayList.get(i).getDescription() + "\n");
 
         return view;
     }

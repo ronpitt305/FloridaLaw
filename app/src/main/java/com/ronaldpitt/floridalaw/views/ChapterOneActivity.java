@@ -2,8 +2,10 @@ package com.ronaldpitt.floridalaw.views;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -74,6 +76,7 @@ public class ChapterOneActivity extends AppCompatActivity {
     private class TitleGetter extends AsyncTask<Void, Void, Void>{
 
         Intent intent = new Intent(ChapterOneActivity.this, TitleTwoActivity.class);
+        Bundle mbundle;
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -99,7 +102,10 @@ public class ChapterOneActivity extends AppCompatActivity {
                 for (int i = 0; i < chapterList.size(); i++){
                     descriptionArray.add(chapterList.get(i).getDescription());
                     arrayForTitle.add(chapterList.get(i).getTitle());
-                    floridaArray.add(new FloridaStatutes(chapterList.get(i).getTitle(), chapterList.get(i).getDescription()));
+                    floridaArray.add(new FloridaStatutes(chapterList.get(i).getChapter(), chapterList.get(i).getTitle(), chapterList.get(i).getDescription()));
+
+                    //CHECKER!!!
+                    Log.i("floridaArray chap", String.valueOf(floridaArray.get(i).getChapter()));
                 }
 
 
@@ -108,9 +114,7 @@ public class ChapterOneActivity extends AppCompatActivity {
 
             //Now sending the array List for the matching Titles
             intent.putExtra("titleArray", arrayForTitle);
-
-            intent.putExtra("floridaArray", floridaArray);
-
+            intent.putParcelableArrayListExtra("floridaArray", floridaArray);
 
 
             // Sending current pressed chapter
